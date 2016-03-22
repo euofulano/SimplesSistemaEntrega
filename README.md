@@ -1,2 +1,2 @@
 # TesteSistemaEntregas
-Sistema de entrega para calcular o caminho de menor custo 
+Sistema para calcular a rota de menor custo.
