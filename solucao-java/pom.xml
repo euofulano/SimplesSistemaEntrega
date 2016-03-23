@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.com.humbertodosreis</groupId>
-    <artifactId>entregra</artifactId>
+    <artifactId>entrega</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>entregra</name>
+    <name>SimplesSistemaEntrega</name>
 
     <dependencyManagement>
         <dependencies>
