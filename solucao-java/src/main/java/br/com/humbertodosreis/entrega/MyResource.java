@@ -1,4 +1,4 @@
-package br.com.humbertodosreis.entregra;
+package br.com.humbertodosreis.entrega;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

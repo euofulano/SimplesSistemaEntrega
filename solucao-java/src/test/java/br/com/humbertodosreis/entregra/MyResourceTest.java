@@ -1,5 +1,6 @@
 package br.com.humbertodosreis.entregra;
 
+import br.com.humbertodosreis.entrega.Main;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
