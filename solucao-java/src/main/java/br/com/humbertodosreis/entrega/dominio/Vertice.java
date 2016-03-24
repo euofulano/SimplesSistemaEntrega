@@ -1,4 +1,4 @@
-package br.com.humbertodosreis.entrega.model;
+package br.com.humbertodosreis.entrega.dominio;
 
 import java.util.ArrayList;
 

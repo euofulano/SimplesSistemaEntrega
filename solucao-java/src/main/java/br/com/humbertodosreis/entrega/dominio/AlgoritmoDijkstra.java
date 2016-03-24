@@ -1,5 +1,5 @@
 
-package br.com.humbertodosreis.entrega.model;
+package br.com.humbertodosreis.entrega.dominio;
 
 import java.util.*;
 
@@ -39,16 +39,16 @@ public class AlgoritmoDijkstra {
         this.initialVertexLabel = initialVertexLabel;
         this.predecessors = new HashMap<String, String>();
         this.distances = new HashMap<String, Integer>();
-        this.availableVertices = new PriorityQueue<Vertex>(vertexKeys.size(), new Comparator<Vertex>(){
+        this.availableVertices = new PriorityQueue<Vertice>(vertexKeys.size(), new Comparator<Vertice>(){
             
-            public int compare(Vertex one, Vertex two){
-                int weightOne = Dijkstra.this.distances.get(one.getLabel());
-                int weightTwo = Dijkstra.this.distances.get(two.getLabel());
+            public int compare(Vertice one, Vertice two){
+                int weightOne = AlgoritmoDijkstra.this.distances.get(one.getNome());
+                int weightTwo = AlgoritmoDijkstra.this.distances.get(two.getNome());
                 return weightOne - weightTwo;
             }
         });
         
-        this.visitedVertices = new HashSet<Vertex>();
+        this.visitedVertices = new HashSet<Vertice>();
         
         //for each Vertex in the graph
         //assume it has distance infinity denoted by Integer.MAX_VALUE
@@ -62,12 +62,12 @@ public class AlgoritmoDijkstra {
         this.distances.put(initialVertexLabel, 0);
         
         //and seed initialVertex's neighbors
-        Vertex initialVertex = this.graph.getVertex(initialVertexLabel);
-        ArrayList<Edge> initialVertexNeighbors = initialVertex.getNeighbors();
-        for(Edge e : initialVertexNeighbors){
-            Vertex other = e.getNeighbor(initialVertex);
-            this.predecessors.put(other.getLabel(), initialVertexLabel);
-            this.distances.put(other.getLabel(), e.getWeight());
+        Vertice initialVertex = this.graph.getVertex(initialVertexLabel);
+        ArrayList<Aresta> initialVertexNeighbors = initialVertex.getVizinhos();
+        for(Aresta e : initialVertexNeighbors){
+            Vertice other = e.getVizinho(initialVertex);
+            this.predecessors.put(other.getNome(), initialVertexLabel);
+            this.distances.put(other.getNome(), e.getPeso());
             this.availableVertices.add(other);
         }
         
@@ -91,13 +91,13 @@ public class AlgoritmoDijkstra {
         while(this.availableVertices.size() > 0){
             
             //pick the cheapest vertex
-            Vertex next = this.availableVertices.poll();
-            int distanceToNext = this.distances.get(next.getLabel());
+            Vertice next = this.availableVertices.poll();
+            int distanceToNext = this.distances.get(next.getNome());
             
             //and for each available neighbor of the chosen vertex
-            List<Edge> nextNeighbors = next.getNeighbors();     
-            for(Edge e: nextNeighbors){
-                Vertex other = e.getNeighbor(next);
+            List<Aresta> nextNeighbors = next.getVizinhos();     
+            for(Aresta e: nextNeighbors){
+                Vertice other = e.getVizinho(next);
                 if(this.visitedVertices.contains(other)){
                     continue;
                 }
@@ -105,12 +105,12 @@ public class AlgoritmoDijkstra {
                 //we check if a shorter path exists
                 //and update to indicate a new shortest found path
                 //in the graph
-                int currentWeight = this.distances.get(other.getLabel());
-                int newWeight = distanceToNext + e.getWeight();
+                int currentWeight = this.distances.get(other.getNome());
+                int newWeight = distanceToNext + e.getPeso();
                 
                 if(newWeight < currentWeight){
-                    this.predecessors.put(other.getLabel(), next.getLabel());
-                    this.distances.put(other.getLabel(), newWeight);
+                    this.predecessors.put(other.getNome(), next.getNome());
+                    this.distances.put(other.getNome(), newWeight);
                     this.availableVertices.remove(other);
                     this.availableVertices.add(other);
                 }
@@ -131,13 +131,13 @@ public class AlgoritmoDijkstra {
      *         initial Vertex and terminating at the Vertex specified by destinationLabel.
      *         The path is the shortest path specified by Dijkstra's algorithm.
      */
-    public List<Vertex> getPathTo(String destinationLabel){
-        LinkedList<Vertex> path = new LinkedList<Vertex>();
+    public List<Vertice> getPathTo(String destinationLabel){
+        LinkedList<Vertice> path = new LinkedList<Vertice>();
         path.add(graph.getVertex(destinationLabel));
         
         while(!destinationLabel.equals(this.initialVertexLabel)){
-            Vertex predecessor = graph.getVertex(this.predecessors.get(destinationLabel));
-            destinationLabel = predecessor.getLabel();
+            Vertice predecessor = graph.getVertex(this.predecessors.get(destinationLabel));
+            destinationLabel = predecessor.getNome();
             path.add(0, predecessor);
         }
         return path;
@@ -155,30 +155,30 @@ public class AlgoritmoDijkstra {
     
     
     public static void main(String[] args){
-        Graph graph = new Graph();
-        Vertex[] vertices = new Vertex[6];
+        Grafo graph = new Grafo();
+        Vertice[] vertices = new Vertice[6];
         
         for(int i = 0; i < vertices.length; i++){
-            vertices[i] = new Vertex(i + "");
+            vertices[i] = new Vertice(i + "");
             graph.addVertex(vertices[i], true);
         }
         
-        Edge[] edges = new Edge[9];
-        edges[0] = new Edge(vertices[0], vertices[1], 7);
-        edges[1] = new Edge(vertices[0], vertices[2], 9);
-        edges[2] = new Edge(vertices[0], vertices[5], 14);
-        edges[3] = new Edge(vertices[1], vertices[2], 10);
-        edges[4] = new Edge(vertices[1], vertices[3], 15);
-        edges[5] = new Edge(vertices[2], vertices[3], 11);
-        edges[6] = new Edge(vertices[2], vertices[5], 2);
-        edges[7] = new Edge(vertices[3], vertices[4], 6);
-        edges[8] = new Edge(vertices[4], vertices[5], 9);
+        Aresta[] edges = new Aresta[9];
+        edges[0] = new Aresta(vertices[0], vertices[1], 7);
+        edges[1] = new Aresta(vertices[0], vertices[2], 9);
+        edges[2] = new Aresta(vertices[0], vertices[5], 14);
+        edges[3] = new Aresta(vertices[1], vertices[2], 10);
+        edges[4] = new Aresta(vertices[1], vertices[3], 15);
+        edges[5] = new Aresta(vertices[2], vertices[3], 11);
+        edges[6] = new Aresta(vertices[2], vertices[5], 2);
+        edges[7] = new Aresta(vertices[3], vertices[4], 6);
+        edges[8] = new Aresta(vertices[4], vertices[5], 9);
         
-        for(Edge e: edges){
-            graph.addEdge(e.getOne(), e.getTwo(), e.getWeight());
+        for(Aresta e: edges){
+            graph.addEdge(e.getOrigem(), e.getDestino(), e.getPeso());
         }
         
-        Dijkstra dijkstra = new Dijkstra(graph, vertices[0].getLabel());
+        AlgoritmoDijkstra dijkstra = new AlgoritmoDijkstra(graph, vertices[0].getNome());
         System.out.println(dijkstra.getDistanceTo("5"));
         System.out.println(dijkstra.getPathTo("5"));
     }

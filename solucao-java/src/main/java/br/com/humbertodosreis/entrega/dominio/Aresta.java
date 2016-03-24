@@ -1,4 +1,4 @@
-package br.com.humbertodosreis.entrega.model;
+package br.com.humbertodosreis.entrega.dominio;
 
 import java.util.Comparator;
 
@@ -22,7 +22,7 @@ public class Aresta implements Comparable<Aresta> {
     }
 
     public Vertice getVizinho(Vertice vertice) {
-        if (vertice.equals(origem) || vertice.equals(destino)) {
+        if (!(vertice.equals(origem) || vertice.equals(destino))) {
             return null;
         }
 
