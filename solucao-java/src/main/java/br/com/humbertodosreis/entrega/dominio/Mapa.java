@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Grafo {
+public class Mapa {
 
-    private HashMap<String, Vertice> vertices;
-    private HashMap<Integer, Aresta> edges;
+    private HashMap<String, Local> locais;
+    private HashMap<Integer, Rota> trajetos;
 
-    public Grafo() {
-        this.vertices = new HashMap<String, Vertice>();
-        this.edges = new HashMap<Integer, Aresta>();
+    public Mapa() {
+        this.locais = new HashMap<String, Local>();
+        this.trajetos = new HashMap<Integer, Rota>();
     }
 
     /**
@@ -20,14 +20,14 @@ public class Grafo {
      * this.vertices. If multiple Vertex objects have the same label, then the
      * last Vertex with the given label is used.
      *
-     * @param vertices The initial Vertices to populate this Graph
+     * @param locais The initial Vertices to populate this Graph
      */
-    public Grafo(ArrayList<Vertice> vertices) {
-        this.vertices = new HashMap<String, Vertice>();
-        this.edges = new HashMap<Integer, Aresta>();
+    public Mapa(ArrayList<Local> locais) {
+        this.locais = new HashMap<String, Local>();
+        this.trajetos = new HashMap<Integer, Rota>();
 
-        for (Vertice v : vertices) {
-            this.vertices.put(v.getNome(), v);
+        for (Local v : locais) {
+            this.locais.put(v.getNome(), v);
         }
 
     }
@@ -36,40 +36,40 @@ public class Grafo {
      * This method adds am edge between Vertices one and two of weight 1, if no
      * Edge between these Vertices already exists in the Graph.
      *
-     * @param one The first vertex to add
-     * @param two The second vertex to add
+     * @param origem The first vertex to add
+     * @param destino The second vertex to add
      * @return true iff no Edge relating one and two exists in the Graph
      */
-    public boolean addEdge(Vertice one, Vertice two) {
-        return addEdge(one, two, 1);
+    public boolean adicionarTrajeto(Local origem, Local destino) {
+        return Mapa.this.adicionarTrajeto(origem, destino, 1);
     }
 
     /**
      * Accepts two vertices and a weight, and adds the edge ({one, two}, weight)
      * iff no Edge relating one and two exists in the Graph.
      *
-     * @param one The first Vertex of the Edge
-     * @param two The second Vertex of the Edge
-     * @param weight The weight of the Edge
+     * @param origem The first Vertex of the Edge
+     * @param destino The second Vertex of the Edge
+     * @param distancia The weight of the Edge
      * @return true iff no Edge already exists in the Graph
      */
-    public boolean addEdge(Vertice one, Vertice two, int weight) {
-        if (one.equals(two)) {
+    public boolean adicionarTrajeto(Local origem, Local destino, int distancia) {
+        if (origem.equals(destino)) {
             return false;
         }
 
         //ensures the Edge is not in the Graph
-        Aresta e = new Aresta(one, two, weight);
-        if (edges.containsKey(e.hashCode())) {
+        Rota e = new Rota(origem, destino, distancia);
+        if (trajetos.containsKey(e.hashCode())) {
             return false;
         } //and that the Edge isn't already incident to one of the vertices
-        else if (one.contemVizinho(e) || two.contemVizinho(e)) {
+        else if (origem.contemVizinho(e) || destino.contemVizinho(e)) {
             return false;
         }
 
-        edges.put(e.hashCode(), e);
-        one.adicionarVizinho(e);
-        two.adicionarVizinho(e);
+        trajetos.put(e.hashCode(), e);
+        origem.adicionarVizinho(e);
+        destino.adicionarVizinho(e);
         return true;
     }
 
@@ -78,12 +78,12 @@ public class Grafo {
      * @param e The Edge to look up
      * @return true iff this Graph contains the Edge e
      */
-    public boolean containsEdge(Aresta e) {
+    public boolean contemTrajeto(Rota e) {
         if (e.getOrigem() == null || e.getDestino() == null) {
             return false;
         }
 
-        return this.edges.containsKey(e.hashCode());
+        return this.trajetos.containsKey(e.hashCode());
     }
 
     /**
@@ -93,10 +93,10 @@ public class Grafo {
      * @param e The Edge to remove from the Graph
      * @return Edge The Edge removed from the Graph
      */
-    public Aresta removeEdge(Aresta e) {
+    public Rota removerTrajeto(Rota e) {
         e.getOrigem().retirarVizinho(e);
         e.getDestino().retirarVizinho(e);
-        return this.edges.remove(e.hashCode());
+        return this.trajetos.remove(e.hashCode());
     }
 
     /**
@@ -104,8 +104,8 @@ public class Grafo {
      * @param vertex The Vertex to look up
      * @return true iff this Graph contains vertex
      */
-    public boolean containsVertex(Vertice vertex) {
-        return this.vertices.get(vertex.getNome()) != null;
+    public boolean contemLocal(Local vertex) {
+        return this.locais.get(vertex.getNome()) != null;
     }
 
     /**
@@ -113,8 +113,8 @@ public class Grafo {
      * @param label The specified Vertex label
      * @return Vertex The Vertex with the specified label
      */
-    public Vertice getVertex(String label) {
-        return vertices.get(label);
+    public Local getLocal(String label) {
+        return locais.get(label);
     }
 
     /**
@@ -123,23 +123,23 @@ public class Grafo {
      * only if overwriteExisting is true. If the existing Vertex is overwritten,
      * the Edges incident to it are all removed from the Graph.
      *
-     * @param vertex
+     * @param local
      * @param overwriteExisting
      * @return true iff vertex was added to the Graph
      */
-    public boolean addVertex(Vertice vertex, boolean overwriteExisting) {
-        Vertice current = this.vertices.get(vertex.getNome());
+    public boolean adicionarLocal(Local local, boolean overwriteExisting) {
+        Local current = this.locais.get(local.getNome());
         if (current != null) {
             if (!overwriteExisting) {
                 return false;
             }
 
             while (current.getTotalVizinhos() > 0) {
-                this.removeEdge(current.getVizinho(0));
+                this.removerTrajeto(current.getVizinho(0));
             }
         }
 
-        vertices.put(vertex.getNome(), vertex);
+        locais.put(local.getNome(), local);
         return true;
     }
 
@@ -148,11 +148,11 @@ public class Grafo {
      * @param label The label of the Vertex to remove
      * @return Vertex The removed Vertex object
      */
-    public Vertice removeVertex(String label) {
-        Vertice v = vertices.remove(label);
+    public Local removerLocal(String label) {
+        Local v = locais.remove(label);
 
         while (v.getTotalVizinhos() > 0) {
-            this.removeEdge(v.getVizinho((0)));
+            this.removerTrajeto(v.getVizinho((0)));
         }
 
         return v;
@@ -163,15 +163,15 @@ public class Grafo {
      * @return Set<String> The unique labels of the Graph's Vertex objects
      */
     public Set<String> vertexKeys() {
-        return this.vertices.keySet();
+        return this.locais.keySet();
     }
 
     /**
      *
      * @return Set<Edge> The Edges of this graph
      */
-    public Set<Aresta> getEdges() {
-        return new HashSet<Aresta>(this.edges.values());
+    public Set<Rota> getTrajetos() {
+        return new HashSet<Rota>(this.trajetos.values());
     }
 
 }

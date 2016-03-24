@@ -1,27 +1,25 @@
 package br.com.humbertodosreis.entrega.dominio;
 
-import java.util.Comparator;
-
 /**
  *
  * @author humberto
  */
-public class Aresta implements Comparable<Aresta> {
+public class Rota implements Comparable<Rota> {
 
-    private Vertice origem, destino;
-    private int peso;
+    private Local origem, destino;
+    private int distancia;
 
-    public Aresta(Vertice origem, Vertice destino) {
+    public Rota(Local origem, Local destino) {
         this(origem, destino, 1);
     }
 
-    public Aresta(Vertice origem, Vertice destino, int peso) {
+    public Rota(Local origem, Local destino, int distancia) {
         this.origem = (origem.getNome().compareTo(destino.getNome()) <= 0) ? origem : destino;
         this.destino = (this.origem == origem) ? destino : origem;
-        this.peso = peso;
+        this.distancia = distancia;
     }
 
-    public Vertice getVizinho(Vertice vertice) {
+    public Local getVizinho(Local vertice) {
         if (!(vertice.equals(origem) || vertice.equals(destino))) {
             return null;
         }
@@ -29,39 +27,41 @@ public class Aresta implements Comparable<Aresta> {
         return (vertice.equals(origem)) ? destino : origem;
     }
 
-    public Vertice getOrigem() {
+    public Local getOrigem() {
         return this.origem;
     }
 
-    public Vertice getDestino() {
+    public Local getDestino() {
         return this.destino;
     }
 
-    public int getPeso() {
-        return this.peso;
+    public int getDistancia() {
+        return this.distancia;
     }
 
-    public void setPeso(int peso) {
-        this.peso = peso;
+    public void setDistancia(int distancia) {
+        this.distancia = distancia;
     }
 
     @Override
-    public int compareTo(Aresta aresta) {
-        return this.peso - aresta.peso;
+    public int compareTo(Rota trajeto) {
+        return this.distancia - trajeto.distancia;
     }
 
     /**
      *
      * @return String A String representation of this Edge
      */
+    @Override
     public String toString() {
-        return "({" + origem + ", " + destino + "}, " + peso + ")";
+        return "({" + origem + ", " + destino + "}, " + distancia + ")";
     }
 
     /**
      *
      * @return int The hash code for this Edge
      */
+    @Override
     public int hashCode() {
         return (origem.getNome() + destino.getNome()).hashCode();
     }
@@ -71,12 +71,13 @@ public class Aresta implements Comparable<Aresta> {
      * @param other The Object to compare against this
      * @return ture if other is an Edge with the same Vertices as this
      */
+    @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Aresta)) {
+        if (!(other instanceof Rota)) {
             return false;
         }
 
-        Aresta e = (Aresta) other;
+        Rota e = (Rota) other;
 
         return e.origem.equals(this.origem) && e.destino.equals(this.destino);
     }

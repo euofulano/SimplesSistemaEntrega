@@ -6,17 +6,17 @@ import java.util.ArrayList;
  *
  * @author humberto
  */
-public class Vertice {
+public class Local {
     
-    private ArrayList<Aresta> vizinhos;
+    private ArrayList<Rota> vizinhos;
     private String nome;
     
-    public Vertice(String nome) {
+    public Local(String nome) {
         this.nome = nome;
-        this.vizinhos = new ArrayList<Aresta>();
+        this.vizinhos = new ArrayList<Rota>();
     }
     
-    public void adicionarVizinho(Aresta vizinho) {
+    public void adicionarVizinho(Rota vizinho) {
         if (this.vizinhos.contains(vizinho)) {
             return ;
         }
@@ -24,19 +24,19 @@ public class Vertice {
         this.vizinhos.add(vizinho);
     }
     
-    public boolean contemVizinho(Aresta vizinho) {
+    public boolean contemVizinho(Rota vizinho) {
         return this.vizinhos.contains(vizinho);
     }
     
-    public Aresta getVizinho(int index) {
+    public Rota getVizinho(int index) {
         return this.vizinhos.get(index);
     }
     
-    Aresta retirarVizinho(int index) {
+    Rota retirarVizinho(int index) {
         return this.vizinhos.remove(index);
     }
     
-    public void retirarVizinho(Aresta vizinho) {
+    public void retirarVizinho(Rota vizinho) {
         this.vizinhos.remove(vizinho);
     }
     
@@ -60,15 +60,15 @@ public class Vertice {
     }
     
      public boolean equals(Object other){
-        if(!(other instanceof Vertice)){
+        if(!(other instanceof Local)){
             return false;
         }
         
-        Vertice v = (Vertice)other;
+        Local v = (Local)other;
         return this.nome.equals(v.nome);
     }
     
-    public ArrayList<Aresta> getVizinhos(){
-        return new ArrayList<Aresta>(this.vizinhos);
+    public ArrayList<Rota> getVizinhos(){
+        return new ArrayList<Rota>(this.vizinhos);
     }            
 }

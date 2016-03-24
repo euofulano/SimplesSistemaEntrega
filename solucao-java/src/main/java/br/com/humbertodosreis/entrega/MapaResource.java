@@ -1,9 +1,10 @@
 package br.com.humbertodosreis.entrega;
 
-import br.com.humbertodosreis.entrega.dominio.AlgoritmoDijkstra;
-import br.com.humbertodosreis.entrega.dominio.Aresta;
-import br.com.humbertodosreis.entrega.dominio.Grafo;
-import br.com.humbertodosreis.entrega.dominio.Vertice;
+import br.com.humbertodosreis.entrega.dominio.ServicoRota;
+import br.com.humbertodosreis.entrega.dominio.Rota;
+import br.com.humbertodosreis.entrega.dominio.Mapa;
+import br.com.humbertodosreis.entrega.dominio.Local;
+import br.com.humbertodosreis.entrega.dominio.MalhaLogistica;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -33,52 +34,55 @@ public class MapaResource {
     }*/
     
     @GET
+    @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Vertice> getAll() {
-        Grafo graph = new Grafo();
-        Vertice[] vertices = new Vertice[6];
+    public List<Local> getAll() {
+        Mapa graph = new Mapa();
+        Local[] vertices = new Local[6];
         
         for(int i = 0; i < vertices.length; i++){
-            vertices[i] = new Vertice(i + "");
-            graph.addVertex(vertices[i], true);
+            vertices[i] = new Local(i + "");
+            graph.adicionarLocal(vertices[i], true);
         }
         
-        Aresta[] edges = new Aresta[9];
-        edges[0] = new Aresta(vertices[0], vertices[1], 7);
-        edges[1] = new Aresta(vertices[0], vertices[2], 9);
-        edges[2] = new Aresta(vertices[0], vertices[5], 14);
-        edges[3] = new Aresta(vertices[1], vertices[2], 10);
-        edges[4] = new Aresta(vertices[1], vertices[3], 15);
-        edges[5] = new Aresta(vertices[2], vertices[3], 11);
-        edges[6] = new Aresta(vertices[2], vertices[5], 2);
-        edges[7] = new Aresta(vertices[3], vertices[4], 6);
-        edges[8] = new Aresta(vertices[4], vertices[5], 9);
+        Rota[] edges = new Rota[9];
+        edges[0] = new Rota(vertices[0], vertices[1], 7);
+        edges[1] = new Rota(vertices[0], vertices[2], 9);
+        edges[2] = new Rota(vertices[0], vertices[5], 14);
+        edges[3] = new Rota(vertices[1], vertices[2], 10);
+        edges[4] = new Rota(vertices[1], vertices[3], 15);
+        edges[5] = new Rota(vertices[2], vertices[3], 11);
+        edges[6] = new Rota(vertices[2], vertices[5], 2);
+        edges[7] = new Rota(vertices[3], vertices[4], 6);
+        edges[8] = new Rota(vertices[4], vertices[5], 9);
         
-        for(Aresta e: edges){
-            graph.addEdge(e.getOrigem(), e.getDestino(), e.getPeso());
+        for(Rota e: edges){
+            graph.adicionarTrajeto(e.getOrigem(), e.getDestino(), e.getDistancia());
         }
         
-        AlgoritmoDijkstra dijkstra = new AlgoritmoDijkstra(graph, vertices[0].getNome());
+        ServicoRota dijkstra = new ServicoRota(graph, vertices[0].getNome());
         
-        return dijkstra.getPathTo("5");
+        return dijkstra.getCaminhoPara("5");
     }
     
     @POST
     @Path("/cadastrar")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response cadastrar() {
+    public Response cadastrar(MalhaLogistica malha) {
+        System.out.println(malha);
+        
         return Response.status(201).build();
     }
     
-    @POST
+    @GET
     @Path("/obter-rota")
-    @Consumes(MediaType.APPLICATION_JSON)
+    //@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public String obterRota() {
-        String[] x = new String[0];
+        /*String[] x = new String[0];
         x[0] = "teste1";
         x[1] = "teste2";
-        
+        */
         return "Um Teste";
     }
     
