@@ -1,13 +1,14 @@
 package br.com.humbertodosreis.entrega.dominio;
 
-/**
- *
- * @author humberto
- */
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Rota implements Comparable<Rota> {
 
     private Local origem, destino;
     private int distancia;
+    
+    public Rota() {}
 
     public Rota(Local origem, Local destino) {
         this(origem, destino, 1);

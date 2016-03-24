@@ -41,7 +41,7 @@ public class Mapa {
      * @return true iff no Edge relating one and two exists in the Graph
      */
     public boolean adicionarTrajeto(Local origem, Local destino) {
-        return Mapa.this.adicionarTrajeto(origem, destino, 1);
+        return Mapa.this.conectar(origem, destino, 1);
     }
 
     /**
@@ -53,7 +53,7 @@ public class Mapa {
      * @param distancia The weight of the Edge
      * @return true iff no Edge already exists in the Graph
      */
-    public boolean adicionarTrajeto(Local origem, Local destino, int distancia) {
+    public boolean conectar(Local origem, Local destino, int distancia) {
         if (origem.equals(destino)) {
             return false;
         }

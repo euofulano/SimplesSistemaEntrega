@@ -1,15 +1,15 @@
 package br.com.humbertodosreis.entrega.dominio;
 
 import java.util.ArrayList;
+import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author humberto
- */
+@XmlRootElement
 public class Local {
     
     private ArrayList<Rota> vizinhos;
     private String nome;
+        
+    public Local() {}
     
     public Local(String nome) {
         this.nome = nome;

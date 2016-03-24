@@ -32,6 +32,8 @@ public class ServicoRota {
         this.malhaLogistica = malha;
         Set<String> vertexKeys = this.malhaLogistica.vertexKeys();
         
+        System.out.println(vertexKeys.toArray());
+        
         if(!vertexKeys.contains(nomeLocalOrigem)){
             throw new IllegalArgumentException("The graph must contain the initial vertex.");
         }
@@ -156,7 +158,7 @@ public class ServicoRota {
     }
     
     
-    public static void main(String[] args){
+    /*public static void main(String[] args){
         Mapa graph = new Mapa();
         Local[] vertices = new Local[6];
         
@@ -177,12 +179,12 @@ public class ServicoRota {
         edges[8] = new Rota(vertices[4], vertices[5], 9);
         
         for(Rota e: edges){
-            graph.adicionarTrajeto(e.getOrigem(), e.getDestino(), e.getDistancia());
+            graph.conectar(e.getOrigem(), e.getDestino(), e.getDistancia());
         }
         
         ServicoRota dijkstra = new ServicoRota(graph, vertices[0].getNome());
         System.out.println(dijkstra.getDistanciaPara("5"));
         System.out.println(dijkstra.getCaminhoPara("5"));
-    }
+    }*/
 }
 

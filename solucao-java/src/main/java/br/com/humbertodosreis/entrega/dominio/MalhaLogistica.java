@@ -1,16 +1,15 @@
 package br.com.humbertodosreis.entrega.dominio;
 
-import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author humberto
- */
+@XmlRootElement
 public class MalhaLogistica {
     
     private String nomeMapa;
     
     private Rota[] rotas;
+    
+    public MalhaLogistica() {}
     
     /**
      * 

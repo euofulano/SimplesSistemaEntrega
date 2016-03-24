@@ -15,55 +15,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-/**
- * Root resource (exposed at "myresource" path)
- */
 @Path("mapas")
 public class MapaResource {
-
-    /**
-     * Method handling HTTP GET requests. The returned object will be sent
-     * to the client as "text/plain" media type.
-     *
-     * @return String that will be returned as a text/plain response.
-     */
-    /*@GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getIt() {
-        return "Got it!";
-    }*/
-    
-    @GET
-    @Path("/all")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<Local> getAll() {
-        Mapa graph = new Mapa();
-        Local[] vertices = new Local[6];
-        
-        for(int i = 0; i < vertices.length; i++){
-            vertices[i] = new Local(i + "");
-            graph.adicionarLocal(vertices[i], true);
-        }
-        
-        Rota[] edges = new Rota[9];
-        edges[0] = new Rota(vertices[0], vertices[1], 7);
-        edges[1] = new Rota(vertices[0], vertices[2], 9);
-        edges[2] = new Rota(vertices[0], vertices[5], 14);
-        edges[3] = new Rota(vertices[1], vertices[2], 10);
-        edges[4] = new Rota(vertices[1], vertices[3], 15);
-        edges[5] = new Rota(vertices[2], vertices[3], 11);
-        edges[6] = new Rota(vertices[2], vertices[5], 2);
-        edges[7] = new Rota(vertices[3], vertices[4], 6);
-        edges[8] = new Rota(vertices[4], vertices[5], 9);
-        
-        for(Rota e: edges){
-            graph.adicionarTrajeto(e.getOrigem(), e.getDestino(), e.getDistancia());
-        }
-        
-        ServicoRota dijkstra = new ServicoRota(graph, vertices[0].getNome());
-        
-        return dijkstra.getCaminhoPara("5");
-    }
     
     @POST
     @Path("/cadastrar")
@@ -77,14 +30,40 @@ public class MapaResource {
     @GET
     @Path("/obter-rota")
     //@Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_PLAIN)
-    public String obterRota() {
-        /*String[] x = new String[0];
-        x[0] = "teste1";
-        x[1] = "teste2";
-        */
-        return "Um Teste";
-    }
-    
-    
+    @Produces(MediaType.APPLICATION_JSON)
+    public MalhaLogistica obterRota() {
+        Mapa mapa = new Mapa();
+        
+        Local[] locais = new Local[5];
+        
+        locais[0] = new Local("A");
+        locais[1] = new Local("B");
+        locais[2] = new Local("C");
+        locais[3] = new Local("D");
+        locais[4] = new Local("E");     
+        
+        for(Local l: locais) {
+            mapa.adicionarLocal(l, true);            
+        }        
+                
+        Rota[] rotas = new Rota[6];
+        
+        rotas[0] = new Rota(new Local("A"), new Local("B"), 10);
+        rotas[1] = new Rota(new Local("B"), new Local("D"), 15);
+        rotas[2] = new Rota(new Local("A"), new Local("C"), 20);
+        rotas[3] = new Rota(new Local("C"), new Local("D"), 30);
+        rotas[4] = new Rota(new Local("B"), new Local("E"), 50);
+        rotas[5] = new Rota(new Local("D"), new Local("E"), 30);
+        
+        for(Rota e: rotas){
+            mapa.conectar(e.getOrigem(), e.getDestino(), e.getDistancia());
+        }
+                
+        ServicoRota servico = new ServicoRota(mapa, "A");
+        
+        System.out.println(servico.getDistanciaPara("B"));
+        //System.out.println(servico.getCaminhoPara("D"));      
+                
+        return new MalhaLogistica("SP", rotas);
+    }    
 }

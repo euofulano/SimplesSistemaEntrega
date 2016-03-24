@@ -1,0 +1,10 @@
+{
+    "nomeMapa": "SP",
+    "rotas": [
+        {
+            "origem": {"nome":"A"}, 
+            "destino": {"nome": "B"},
+            "distancia": 10
+        }
+    ]
+}
