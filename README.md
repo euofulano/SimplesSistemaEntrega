@@ -1,8 +1,12 @@
 # SimplesSistemaEntrega
-Encontrar a rota de menor custo.
+Aplicação de determina o caminho de menor custo entre dois pontos em um mapa. O caminho de menor custo é determinado com a implementação do *algoritmo de Disjkra* desenvolvido com o proposito de solucionar este tipo de problema.
 
-### Implementação
-Para determina a rota de menor custo, foi escolhido o algoritmo de Dijskra.
+### Solução
+O sistema foi desenvolvido em java, o webservice foi construíd coom o padrão RESTful. O banco de dados SQLite foi selecionado para realizar a persistência e o servidor Grizzly para rodar o webservice. Com esta implementação a aplicação pode ser executada sem depender de muitos recursos do ambiente e o deploy pode ser realizado de forma simples.
+
+### Executando o sistema
+
+### Testes
 
 ### Referências:
 * https://en.wikipedia.org/wiki/Dijkstra's_algorithm
