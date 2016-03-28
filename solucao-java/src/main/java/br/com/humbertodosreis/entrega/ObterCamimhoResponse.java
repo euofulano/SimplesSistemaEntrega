@@ -1,21 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package br.com.humbertodosreis.entrega.dominio;
 
+package br.com.humbertodosreis.entrega;
+
+import br.com.humbertodosreis.entrega.dominio.Local;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class MelhorRota {
+public class ObterCamimhoResponse {
     
     private List<String> rota = new ArrayList<String>();
     private double custo;
 
-    public MelhorRota(
+    public ObterCamimhoResponse(
             List<Local> caminho,
             double custo
     ) {

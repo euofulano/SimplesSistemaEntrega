@@ -1,23 +1,24 @@
-package br.com.humbertodosreis.entrega.dominio;
+package br.com.humbertodosreis.entrega;
 
+import br.com.humbertodosreis.entrega.dominio.Rota;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class MalhaLogistica {
+public class CadastrarMapaRequest {
     
-    private String nomeMapa;
+    private String mapa;
     
     private Rota[] rotas;
     
-    public MalhaLogistica() {}
+    public CadastrarMapaRequest() {}
     
     /**
      * 
-     * @param nomeMapa
+     * @param mapa
      * @param rotas 
      */
-    public MalhaLogistica(String nomeMapa, Rota[] rotas) {
-        this.nomeMapa = nomeMapa;
+    public CadastrarMapaRequest(String mapa, Rota[] rotas) {
+        this.mapa = mapa;
         this.rotas = rotas;
     }
     
@@ -25,8 +26,8 @@ public class MalhaLogistica {
      * 
      * @return nome do mapa
      */
-    public String getNomeMapa() {
-        return nomeMapa;
+    public String getMapa() {
+        return mapa;
     }
     
     /**

@@ -1,5 +1,6 @@
 package br.com.humbertodosreis.entrega.dominio;
 
+import br.com.humbertodosreis.entrega.ObterCamimhoResponse;
 import br.com.humbertodosreis.entrega.dao.MapaDao;
 import java.util.*;
 
@@ -201,7 +202,7 @@ public class ServicoRota {
         int x = servico.getDistanciaPara("D");
         List<Local> z = servico.getCaminhoPara("D");
         
-        MelhorRota c = new MelhorRota(z, x);  
+        ObterCamimhoResponse c = new ObterCamimhoResponse(z, x);  
         /*Mapa mapa = new Mapa();
 
         Local[] locais = new Local[5];
