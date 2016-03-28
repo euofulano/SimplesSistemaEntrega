@@ -1,7 +1,7 @@
 package br.com.humbertodosreis.entrega;
 
 import br.com.humbertodosreis.entrega.dao.MapaDao;
-import br.com.humbertodosreis.entrega.dominio.ServicoRota;
+import br.com.humbertodosreis.entrega.dominio.ServicoCaminhoMenorCusto;
 import br.com.humbertodosreis.entrega.dominio.Rota;
 import br.com.humbertodosreis.entrega.dominio.Mapa;
 import br.com.humbertodosreis.entrega.dominio.Local;
@@ -10,6 +10,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -38,15 +39,20 @@ public class MapaResource {
         MapaDao dao = new MapaDao();
         Mapa mapa = new Mapa();
 
-        List<Rota> rotas2 = dao.buscarRotasPorMapa(request.getMapa());
+        List<Rota> rotas = dao.buscarRotasPorMapa(request.getMapa());
+        
+        if (rotas.isEmpty()) {
+            throw new WebApplicationException(
+                    "O mapa '" + request.getMapa() + "' não existe", Response.Status.NOT_FOUND);
+        }
 
-        for (Rota r : rotas2) {
+        for (Rota r : rotas) {
             mapa.adicionarLocal(r.getOrigem(), false);
             mapa.adicionarLocal(r.getDestino(), false);
             mapa.conectar(r.getOrigem(), r.getDestino(), r.getDistancia());
         }
 
-        ServicoRota servico = new ServicoRota(mapa, request.getOrigem());
+        ServicoCaminhoMenorCusto servico = new ServicoCaminhoMenorCusto(mapa, request.getOrigem());
 
         int distancia = servico.getDistanciaPara(request.getDestino());
         List<Local> locais = servico.getCaminhoPara(request.getDestino());

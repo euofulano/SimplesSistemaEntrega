@@ -17,6 +17,20 @@ public class ObterCaminhoRequest {
     private double valorLitro;
     
     public ObterCaminhoRequest() {}
+    
+    public ObterCaminhoRequest(
+            String mapa, 
+            String origem, 
+            String destino, 
+            int autonomia, 
+            double valorLitro
+    ) {
+        this.mapa = mapa;
+        this.origem = origem;
+        this.destino = destino;
+        this.autonomia = autonomia;
+        this.valorLitro = valorLitro;
+    }
 
     public String getMapa() {
         return mapa;

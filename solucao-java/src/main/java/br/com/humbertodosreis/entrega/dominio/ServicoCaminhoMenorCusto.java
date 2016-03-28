@@ -2,7 +2,7 @@ package br.com.humbertodosreis.entrega.dominio;
 
 import java.util.*;
 
-public class ServicoRota {
+public class ServicoCaminhoMenorCusto {
 
     private Mapa malhaLogistica;
     private String nomeLocalOrigem;
@@ -11,7 +11,7 @@ public class ServicoRota {
     private PriorityQueue<Local> locaisAnalisados;
     private HashSet<Local> locaisVisitados;
 
-    public ServicoRota(Mapa malha, String nomeLocalOrigem) {
+    public ServicoCaminhoMenorCusto(Mapa malha, String nomeLocalOrigem) {
         this.malhaLogistica = malha;
         Set<String> nomesLocais = this.malhaLogistica.getNomesLocais();
 
@@ -24,8 +24,8 @@ public class ServicoRota {
         this.distancias = new HashMap<>();
         this.locaisAnalisados = new PriorityQueue<>(nomesLocais.size(), new Comparator<Local>() {
             public int compare(Local origem, Local destino) {
-                int distanciaOrigem = ServicoRota.this.distancias.get(origem.getNome());
-                int distanciaDestino = ServicoRota.this.distancias.get(destino.getNome());
+                int distanciaOrigem = ServicoCaminhoMenorCusto.this.distancias.get(origem.getNome());
+                int distanciaDestino = ServicoCaminhoMenorCusto.this.distancias.get(destino.getNome());
                 return distanciaOrigem - distanciaDestino;
             }
         });
