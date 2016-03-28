@@ -1,10 +1,12 @@
 package br.com.humbertodosreis.entrega;
 
+import br.com.humbertodosreis.entrega.dao.MapaDao;
 import br.com.humbertodosreis.entrega.dominio.ServicoRota;
 import br.com.humbertodosreis.entrega.dominio.Rota;
 import br.com.humbertodosreis.entrega.dominio.Mapa;
 import br.com.humbertodosreis.entrega.dominio.Local;
 import br.com.humbertodosreis.entrega.dominio.MalhaLogistica;
+import br.com.humbertodosreis.entrega.dominio.MelhorRota;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -22,48 +24,43 @@ public class MapaResource {
     @Path("/cadastrar")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response cadastrar(MalhaLogistica malha) {
+        
+        MapaDao dao = new MapaDao();
+        dao.buscarRotasPorMapa("SP");
+        
         System.out.println(malha);
         
         return Response.status(201).build();
     }
     
-    @GET
+    @POST
     @Path("/obter-rota")
-    //@Consumes(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public MalhaLogistica obterRota() {
+    public MelhorRota obterRota() {
+        String nomeMapa = "SP";
+        String origem = "A";
+        String destino = "D";
+        int autonomia = 10;
+        double valorLitro = 2.5;
+        
+        MapaDao dao = new MapaDao();
         Mapa mapa = new Mapa();
         
-        Local[] locais = new Local[5];
+        List<Rota> rotas2 = dao.buscarRotasPorMapa(nomeMapa);
         
-        locais[0] = new Local("A");
-        locais[1] = new Local("B");
-        locais[2] = new Local("C");
-        locais[3] = new Local("D");
-        locais[4] = new Local("E");     
-        
-        for(Local l: locais) {
-            mapa.adicionarLocal(l, true);            
-        }        
-                
-        Rota[] rotas = new Rota[6];
-        
-        rotas[0] = new Rota(new Local("A"), new Local("B"), 10);
-        rotas[1] = new Rota(new Local("B"), new Local("D"), 15);
-        rotas[2] = new Rota(new Local("A"), new Local("C"), 20);
-        rotas[3] = new Rota(new Local("C"), new Local("D"), 30);
-        rotas[4] = new Rota(new Local("B"), new Local("E"), 50);
-        rotas[5] = new Rota(new Local("D"), new Local("E"), 30);
-        
-        for(Rota e: rotas){
-            mapa.conectar(e.getOrigem(), e.getDestino(), e.getDistancia());
+        for (Rota r : rotas2) {
+            mapa.adicionarLocal(r.getOrigem(), false);
+            mapa.adicionarLocal(r.getDestino(), false);
+            mapa.conectar(r.getOrigem(), r.getDestino(), r.getDistancia());
         }
-                
-        ServicoRota servico = new ServicoRota(mapa, "A");
+
+        ServicoRota servico = new ServicoRota(mapa, origem);
         
-        System.out.println(servico.getDistanciaPara("B"));
-        //System.out.println(servico.getCaminhoPara("D"));      
-                
-        return new MalhaLogistica("SP", rotas);
+        int distancia = servico.getDistanciaPara(destino);
+        List<Local> locais = servico.getCaminhoPara(destino);
+        double custo = (distancia / (double) autonomia) * valorLitro;        
+        
+        return new MelhorRota(locais, custo);        
     }    
 }
