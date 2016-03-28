@@ -10,13 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.sqlite.SQLiteConfig;
-import org.sqlite.SQLiteOpenMode;
 
-/**
- *
- * @author humberto
- */
 public class MapaDao {
 
     public void cadastrar(String nomeMapa, Rota rota) {

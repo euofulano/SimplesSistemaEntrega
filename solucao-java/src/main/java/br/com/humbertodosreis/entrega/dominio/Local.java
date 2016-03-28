@@ -13,7 +13,7 @@ public class Local {
     
     public Local(String nome) {
         this.nome = nome;
-        this.vizinhos = new ArrayList<Rota>();
+        this.vizinhos = new ArrayList<>();
     }
     
     public void adicionarVizinho(Rota vizinho) {
@@ -50,7 +50,7 @@ public class Local {
             
     @Override
     public String toString() {
-        return "Vertice " + this.nome;
+        return "Local " + this.nome;
     }
     
     
@@ -59,6 +59,7 @@ public class Local {
         return this.nome.hashCode();
     }
     
+    @Override
      public boolean equals(Object other){
         if(!(other instanceof Local)){
             return false;
@@ -69,6 +70,6 @@ public class Local {
     }
     
     public ArrayList<Rota> getVizinhos(){
-        return new ArrayList<Rota>(this.vizinhos);
+        return new ArrayList<>(this.vizinhos);
     }            
 }

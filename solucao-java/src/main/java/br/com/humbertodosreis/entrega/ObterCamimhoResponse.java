@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ObterCamimhoResponse {
     
-    private List<String> rota = new ArrayList<String>();
+    private List<String> rota = new ArrayList<>();
     private double custo;
 
     public ObterCamimhoResponse(

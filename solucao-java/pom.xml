@@ -105,7 +105,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>br.com.humbertodosreis.entregra.Main</mainClass>
+                    <mainClass>br.com.humbertodosreis.entrega.Main</mainClass>
                 </configuration>
             </plugin>
         </plugins>

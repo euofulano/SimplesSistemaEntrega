@@ -49,29 +49,16 @@ public class Rota implements Comparable<Rota> {
         return this.distancia - trajeto.distancia;
     }
 
-    /**
-     *
-     * @return String A String representation of this Edge
-     */
     @Override
     public String toString() {
         return "({" + origem + ", " + destino + "}, " + distancia + ")";
     }
 
-    /**
-     *
-     * @return int The hash code for this Edge
-     */
     @Override
     public int hashCode() {
         return (origem.getNome() + destino.getNome()).hashCode();
     }
 
-    /**
-     *
-     * @param other The Object to compare against this
-     * @return ture if other is an Edge with the same Vertices as this
-     */
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Rota)) {
